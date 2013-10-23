@@ -1,0 +1,6 @@
+name="Qrencode"
+version="0.0.1"
+description="OCaml bindings for QRencode"
+requires=""
+archive(byte) = "qRencode.cma"
+archive(native) = "qRencode.cmxa"
