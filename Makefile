@@ -3,7 +3,7 @@ OCAMLOPT = ocamlfind ocamlopt
 
 INSTALL = ocamlfind install
 
-lib: qrencode_stubs.o qRencode.cmo qRencode.cmx
+lib: qrencode_stubs.o qRencode.cmo qRencode.cmx qRencode.cmxs
 	ocamlmklib -o qRencode qRencode.cmo qRencode.cmx qrencode_stubs.o -lpng -lqrencode
 
 %.cmo: %.ml
@@ -11,6 +11,9 @@ lib: qrencode_stubs.o qRencode.cmo qRencode.cmx
 
 %.cmx: %.ml
 	$(OCAMLOPT) -c $^
+
+%.cmxs: %.ml
+	$(OCAMLOPT) -shared -o $@  $^
 
 %.o: %.c
 	$(OCAMLC) -c -ccopt -Wall -ccopt -Wextra -ccopt -std=c99 $^
