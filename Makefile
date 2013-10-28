@@ -31,7 +31,7 @@ clean:
 
 
 install:
-	$(INSTALL) qrencode META qRencode.cmi qRencode.cma qRencode.cmxa qRencode.a dllqRencode.so libqRencode.a
+	$(INSTALL) qrencode META qRencode.cmi qRencode.cma qRencode.cmxa qRencode.cmxs qRencode.a dllqRencode.so libqRencode.a
 
 remove:
 	ocamlfind remove qrencode
