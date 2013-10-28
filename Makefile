@@ -1,40 +1,38 @@
-OCAMLC = ocamlfind ocamlc
-OCAMLOPT = ocamlfind ocamlopt
+# OASIS_START
+# DO NOT EDIT (digest: bc1e05bfc8b39b664f29dae8dbd3ebbb)
 
-INSTALL = ocamlfind install
+SETUP = ocaml setup.ml
 
-lib: qrencode_stubs.o qRencode.cmo qRencode.cmx qRencode.cmxs
-	ocamlmklib -o qRencode qRencode.cmo qRencode.cmx qrencode_stubs.o -lpng -lqrencode
+build: setup.data
+	$(SETUP) -build $(BUILDFLAGS)
 
-%.cmo: %.ml
-	$(OCAMLC) -c $^
+doc: setup.data build
+	$(SETUP) -doc $(DOCFLAGS)
 
-%.cmx: %.ml
-	$(OCAMLOPT) -c $^
+test: setup.data build
+	$(SETUP) -test $(TESTFLAGS)
 
-%.cmxs: %.ml
-	$(OCAMLOPT) -shared -o $@  $^
+all: 
+	$(SETUP) -all $(ALLFLAGS)
 
-%.o: %.c
-	$(OCAMLC) -c -ccopt -Wall -ccopt -Wextra -ccopt -std=c99 $^
+install: setup.data
+	$(SETUP) -install $(INSTALLFLAGS)
 
-test:
-	$(OCAMLC) -custom qrencode_stubs.o test.ml -o test -cclib -lqrencode -cclib -lpng
+uninstall: setup.data
+	$(SETUP) -uninstall $(UNINSTALLFLAGS)
 
-clean:
-	rm -f *.o
-	rm -f *.a
-	rm -f *.so
-	rm -f *.cm*
-	rm -rf *~
-	rm -f test
+reinstall: setup.data
+	$(SETUP) -reinstall $(REINSTALLFLAGS)
 
+clean: 
+	$(SETUP) -clean $(CLEANFLAGS)
 
-install:
-	$(INSTALL) qrencode META qRencode.cmi qRencode.cma qRencode.cmxa qRencode.cmxs qRencode.a dllqRencode.so libqRencode.a
+distclean: 
+	$(SETUP) -distclean $(DISTCLEANFLAGS)
 
-remove:
-	ocamlfind remove qrencode
+setup.data:
+	$(SETUP) -configure $(CONFIGUREFLAGS)
 
-reinstall: remove install
+.PHONY: build doc test all install uninstall reinstall clean distclean configure
 
+# OASIS_STOP

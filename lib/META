@@ -1,0 +1,11 @@
+# OASIS_START
+# DO NOT EDIT (digest: 8e15bd795b669b2c8f961745d60cc56c)
+version = "0.0.1"
+description = "Binding to libqrencode"
+archive(byte) = "qrencode.cma"
+archive(byte, plugin) = "qrencode.cma"
+archive(native) = "qrencode.cmxa"
+archive(native, plugin) = "qrencode.cmxs"
+exists_if = "qrencode.cma"
+# OASIS_STOP
+
