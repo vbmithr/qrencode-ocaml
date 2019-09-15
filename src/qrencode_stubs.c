@@ -64,70 +64,6 @@ static value alloc_QRinput(QRinput * w) {
   return v;
 }
 
-/*************************************/
-/* Dealing with typedef QRencodeMode */
-/*************************************/
-
-/* Accessing the QRencodeMode * part of a Caml custom block */
-#define QRencodeMode_val(v) (*((QRencodeMode **) Data_custom_val(v)))
-
-void ocaml_QRencodeMode_finalize (value mode) {
-  printf ("@@@ About to finalize mode value");
-  free (QRencodeMode_val (mode)) ;
-  return ;
-}
-
-static struct custom_operations qrencodemode_ops = {
-  "tmf.qrencode.qrencodemode",
-  ocaml_QRencodeMode_finalize,
-  custom_compare_default,
-  custom_hash_default,
-  custom_serialize_default,
-  custom_deserialize_default,
-  custom_compare_ext_default
-};
-
-/* Allocating a Caml custom block to hold the given QRinput * */
-static value alloc_QRencodeMode(QRencodeMode * w)
-{
-  value v = alloc_custom(&qrencodemode_ops, sizeof(QRencodeMode *), 0, 1);
-  QRencodeMode_val(v) = w;
-  return v;
-}
-
-/***********************/
-/* Cst creation        */
-/* This is probably overkill */
-/***********************/
-
-value ocaml_QRencodeMode_num (value unit) {
-  CAMLparam1(unit);
-  QRencodeMode *mode = (QRencodeMode *) malloc (sizeof (QRencodeMode));
-  *mode = QR_MODE_NUM;
-  CAMLreturn (alloc_QRencodeMode(mode)) ;
-}
-
-value ocaml_QRencodeMode_an(value unit) {
-  CAMLparam1(unit);
-  QRencodeMode *mode = (QRencodeMode *) malloc (sizeof (QRencodeMode));
-  *mode = QR_MODE_AN;
-  CAMLreturn (alloc_QRencodeMode(mode)) ;
-}
-
-value ocaml_QRencodeMode_8 (value unit) {
-  CAMLparam1(unit);
-  QRencodeMode *mode = (QRencodeMode *) malloc (sizeof (QRencodeMode));
-  *mode = QR_MODE_8;
-  CAMLreturn (alloc_QRencodeMode(mode)) ;
-}
-
-value ocaml_QRencodeMode_kanji (value unit) {
-  CAMLparam1(unit);
-  QRencodeMode *mode = (QRencodeMode *) malloc (sizeof (QRencodeMode));
-  *mode = QR_MODE_KANJI;
-  CAMLreturn (alloc_QRencodeMode(mode)) ;
-}
-
 /**********************************/
 /* Input data                     */
 /**********************************/
@@ -142,7 +78,7 @@ value ocaml_QRinput_append(value input, value mode, value data) {
   CAMLparam3 (input, mode, data);
 
   int rc = QRinput_append (QRinput_val (input),
-                           *(QRencodeMode_val(mode)),
+                           Int_val(mode),
                            caml_string_length(data),
                            (unsigned char*)String_val(data));
 
